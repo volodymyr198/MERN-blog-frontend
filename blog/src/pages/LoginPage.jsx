@@ -59,13 +59,13 @@ export const LoginPage = () => {
                     onClick={handleSubmit}
                     className="flex justify-center text-xs bg-gray-600 text-white rounded-lg py-2 px-4"
                 >
-                    Ввійти
+                    Enter
                 </button>
                 <Link
                     to="/register"
                     className="flex justify-center items-center text-xs text-white"
                 >
-                    Не маєш аккаунта?
+                    Don't have an account?
                 </Link>
             </div>
         </form>

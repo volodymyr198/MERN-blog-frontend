@@ -62,13 +62,13 @@ export const RegisterPage = () => {
                     onClick={handleSubmit}
                     className="flex justify-center text-xs bg-gray-600 text-white rounded-lg py-2 px-4"
                 >
-                    Підтвердити
+                    Confirm
                 </button>
                 <Link
                     to="/login"
                     className="flex justify-center items-center text-xs text-white"
                 >
-                    Вже зареєстровані?
+                    Already a member?
                 </Link>
             </div>
         </form>
