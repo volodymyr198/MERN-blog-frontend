@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createPost } from '../redux/features/post/postSlice';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export const AddPostPage = () => {
     const [title, setTitle] = useState('');
@@ -19,6 +20,7 @@ export const AddPostPage = () => {
             data.append('image', image);
 
             dispatch(createPost(data));
+            toast('The post has been added successfully!');
             navigate('/');
         } catch (error) {
             console.log(error);

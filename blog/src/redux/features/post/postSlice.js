@@ -7,7 +7,7 @@ const initialState = {
     loading: false,
 };
 
-export const createPost = createAsyncThunk('post/logout', async params => {
+export const createPost = createAsyncThunk('post/createPost', async params => {
     try {
         const { data } = await axios.post('/posts', params);
         return data;
@@ -19,6 +19,15 @@ export const createPost = createAsyncThunk('post/logout', async params => {
 export const getAllPosts = createAsyncThunk('post/getAllPosts', async () => {
     try {
         const { data } = await axios.get('/posts');
+        return data;
+    } catch (error) {
+        console.log(error.message);
+    }
+});
+
+export const removeMyPost = createAsyncThunk('post/removeMyPost', async id => {
+    try {
+        const { data } = await axios.delete(`/posts/${id}`, id);
         return data;
     } catch (error) {
         console.log(error.message);
@@ -51,7 +60,17 @@ export const postSlice = createSlice({
             })
             .addCase(getAllPosts.rejected, state => {
                 state.loading = false;
-            });
+            })
+            .addCase(removeMyPost.pending, state => {
+                state.loading = true;
+            })
+            .addCase(removeMyPost.fulfilled, (state, action) => {
+                state.loading = false;
+                state.posts = state.posts.filter(post => post._id !== action.payload._id);
+            })
+            .addCase(removeMyPost.rejected, state => {
+                state.loading = false;
+            });;
     },
 });
 
