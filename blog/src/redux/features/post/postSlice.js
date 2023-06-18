@@ -34,6 +34,21 @@ export const removeMyPost = createAsyncThunk('post/removeMyPost', async id => {
     }
 });
 
+export const updateMyPost = createAsyncThunk(
+    'post/updateMyPost',
+    async updatedMyPost => {
+        try {
+            const { data } = await axios.put(
+                `/posts/${updatedMyPost}`,
+                updatedMyPost
+            );
+            return data;
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+);
+
 export const postSlice = createSlice({
     name: 'post',
     initialState,
@@ -66,11 +81,26 @@ export const postSlice = createSlice({
             })
             .addCase(removeMyPost.fulfilled, (state, action) => {
                 state.loading = false;
-                state.posts = state.posts.filter(post => post._id !== action.payload._id);
+                state.posts = state.posts.filter(
+                    post => post._id !== action.payload._id
+                );
             })
             .addCase(removeMyPost.rejected, state => {
                 state.loading = false;
-            });;
+            })
+            .addCase(updateMyPost.pending, state => {
+                state.loading = true;
+            })
+            .addCase(updateMyPost.fulfilled, (state, action) => {
+                state.loading = false;
+                const index = state.posts.findIndex(
+                    post => post._id === action.payload._id
+                );
+                state.posts[index] = action.payload;
+            })
+            .addCase(updateMyPost.rejected, state => {
+                state.loading = false;
+            });
     },
 });
 

@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { AiFillEye, AiOutlineMessage, AiTwotoneEdit, AiFillDelete } from 'react-icons/ai';
+import {
+    AiFillEye,
+    AiOutlineMessage,
+    AiTwotoneEdit,
+    AiFillDelete,
+} from 'react-icons/ai';
 import Moment from 'react-moment';
 import axios from '../utils/axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -15,15 +20,15 @@ export const PostPage = () => {
     const params = useParams();
     const dispatch = useDispatch();
 
-    const removePost = ()=>{
+    const removePost = () => {
         try {
-            dispatch(removeMyPost(params.id))
+            dispatch(removeMyPost(params.id));
             toast('Post deleted successfully');
             navigate('/posts');
         } catch (error) {
             console.log(error.message);
         }
-    }
+    };
 
     const fetchPost = useCallback(async () => {
         const { data } = await axios.get(`/posts/${params.id}`);
@@ -93,9 +98,14 @@ export const PostPage = () => {
                         {user?._id === post.author && (
                             <div className="flex gap-3 mt-4">
                                 <button className="flex items-center justify-center gap-2 text-white opacity-50">
-                                    <AiTwotoneEdit />
+                                    <Link to={`/${params.id}/edit`}>
+                                        <AiTwotoneEdit />
+                                    </Link>
                                 </button>
-                                <button onClick={removePost} className="flex items-center justify-center gap-2 text-white opacity-50">
+                                <button
+                                    onClick={removePost}
+                                    className="flex items-center justify-center gap-2 text-white opacity-50"
+                                >
                                     <AiFillDelete />
                                 </button>
                             </div>
