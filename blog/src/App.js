@@ -13,7 +13,7 @@ import { RegisterPage } from './pages/RegisterPage';
 import { LoginPage } from './pages/LoginPage';
 import { EditPostPage } from './pages/EditPostPage';
 
-import { getMe } from './redux/features/auth/authSlise';
+import { getMe } from './redux/features/auth/authSlice';
 
 function App() {
 const dispatch = useDispatch();
