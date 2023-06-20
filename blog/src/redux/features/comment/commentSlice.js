@@ -22,11 +22,23 @@ export const createComment = createAsyncThunk(
     }
 );
 
+export const getPostComments = createAsyncThunk(
+    'comment/getPostComments',
+    async postId => {
+        try {
+            const { data } = await axios.get(`/posts/comments/${postId}`);
+            return data;
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+);
+
 export const commentSlice = createSlice({
     name: 'comment',
     initialState,
     reducers: {},
-    extraReducers: builder =>{
+    extraReducers: builder => {
         builder
             .addCase(createComment.pending, state => {
                 state.loading = true;
@@ -37,8 +49,18 @@ export const commentSlice = createSlice({
             })
             .addCase(createComment.rejected, state => {
                 state.loading = false;
+            })
+            .addCase(getPostComments.pending, state => {
+                state.loading = true;
+            })
+            .addCase(getPostComments.fulfilled, (state, action) => {
+                state.loading = false;
+                state.comments = action.payload;
+            })
+            .addCase(getPostComments.rejected, state => {
+                state.loading = false;
             });
-    }
+    },
 });
 
 export default commentSlice.reducer;

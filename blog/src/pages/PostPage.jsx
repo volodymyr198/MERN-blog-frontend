@@ -11,13 +11,18 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeMyPost } from '../redux/features/post/postSlice';
 import { toast } from 'react-toastify';
-import { createComment } from '../redux/features/comment/commentSlice';
+import {
+    createComment,
+    getPostComments,
+} from '../redux/features/comment/commentSlice';
+import { CommentItem } from '../components/CommentItem';
 
 export const PostPage = () => {
     const [post, setPost] = useState(null);
     const [comment, setComment] = useState('');
 
     const { user } = useSelector(state => state.auth);
+    const { comments } = useSelector(state => state.comment);
     const navigate = useNavigate();
     const params = useParams();
     const dispatch = useDispatch();
@@ -48,9 +53,21 @@ export const PostPage = () => {
         }
     };
 
+    const fetchComments = useCallback(async () => {
+        try {
+            dispatch(getPostComments(params.id));
+        } catch (error) {
+            console.log(error.message);
+        }
+    },[dispatch, params.id]);
+
     useEffect(() => {
         fetchPost();
     }, [fetchPost]);
+
+    useEffect(() => {
+        fetchComments();
+    }, [fetchComments]);
 
     if (!post) {
         return (
@@ -145,6 +162,10 @@ export const PostPage = () => {
                             Send
                         </button>
                     </form>
+
+                    {comments?.map(cmt => (
+                        <CommentItem key={comment._id} cmt={cmt} />
+                    ))}
                 </div>
             </div>
         </div>
