@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { PostItem } from '../components/PostItem';
 import { PopularPosts } from '../components/PopularPosts';
-import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosts } from '../redux/features/post/postSlice';
 
 export const MainPage = () => {

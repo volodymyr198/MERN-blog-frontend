@@ -1,22 +1,25 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+
 import { logout, checkIsAuth } from '../redux/features/auth/authSlice';
-import { toast } from 'react-toastify';
+import { msgSuccessfulExited } from '../utils/notification';
 
 export const NavBar = () => {
-const isAuth = useSelector(checkIsAuth);
-const dispatch = useDispatch();
+    const isAuth = useSelector(checkIsAuth);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const activeStyles = {
-        color:"white"
-    }
+        color: 'white',
+    };
 
-    const logoutHandler = ()=>{
+    const logoutHandler = () => {
         dispatch(logout());
-        window.localStorage.removeItem("token");
-        toast('You have successfully exited!');
-    }
+        window.localStorage.removeItem('token');
+        navigate('/');
+        msgSuccessfulExited();
+    };
     return (
         <div className="flex py-4 justify-between items-center">
             <span className="flex justify-center items-center w-6 h-6 bg-gray-600 text-xs text-white rounded-sm">

@@ -33,7 +33,7 @@ useEffect(()=>{
                 <Route path="register" element={<RegisterPage />} />
                 <Route path="login" element={<LoginPage />} />
             </Routes>
-            <ToastContainer position='top-center'/>
+            <ToastContainer position="top-center" autoClose={1500} />
         </Layout>
     );
 }

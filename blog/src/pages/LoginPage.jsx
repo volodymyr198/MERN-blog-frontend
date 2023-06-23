@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { checkIsAuth, loginUser } from '../redux/features/auth/authSlice';
-import { toast } from 'react-toastify';
+import { registerLoginSchema } from '../Shared/validation/registerSchema';
+import { DebounceInput } from 'react-debounce-input';
+
+import { msgSuccessfulLogin } from '../utils/notification';
 
 export const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const { status } = useSelector(state => state.auth);
     const isAuth = useSelector(checkIsAuth);
@@ -14,16 +18,20 @@ export const LoginPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (status) toast(status);
+        if (status) msgSuccessfulLogin();
 
         if (isAuth) navigate('/');
     }, [isAuth, navigate, status]);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         try {
-            dispatch(loginUser({ username, password }));
+            await registerLoginSchema.validate({ username, password });
+            await dispatch(loginUser({ username, password }));
+            setError('');
+            setPassword('');
+            setUsername('');
         } catch (error) {
-            console.log(error);
+            setError(error.message);
         }
     };
 
@@ -35,7 +43,9 @@ export const LoginPage = () => {
             <h1 className="text-lg text-white text-center">Authorization</h1>
             <label className="text-xs text-gray-400">
                 Username:
-                <input
+                <DebounceInput
+                    minLength={1}
+                    debounceTimeout={300}
                     type="text"
                     value={username}
                     onChange={e => setUsername(e.target.value)}
@@ -45,7 +55,9 @@ export const LoginPage = () => {
             </label>
             <label className="text-xs text-gray-400">
                 Password:
-                <input
+                <DebounceInput
+                    minLength={1}
+                    debounceTimeout={300}
                     type="password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
@@ -53,6 +65,7 @@ export const LoginPage = () => {
                     className="mt-1 text-black w-full rounded-lg bg-gray400 border py-1 px-2 text-xs outline-none placeholder:text-gray-700"
                 />
             </label>
+            {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
             <div className="flex gap-8 justify-center mt-4">
                 <button
                     type="submit"

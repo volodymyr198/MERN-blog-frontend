@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { DebounceInput } from 'react-debounce-input';
 
 import { checkIsAuth, registerUser } from '../redux/features/auth/authSlice';
-import { registerSchema } from '../Shared/validation/registerSchema';
+import { registerLoginSchema } from '../Shared/validation/registerSchema';
 import { msgSuccessfulRegister } from '../utils/notification';
 
 
@@ -26,7 +26,7 @@ export const RegisterPage = () => {
 
     const handleSubmit = async () => {
         try {
-            await registerSchema.validate({ username, password });
+            await registerLoginSchema.validate({ username, password });
             await dispatch(registerUser({ username, password }));
             setError('');
             setPassword('');

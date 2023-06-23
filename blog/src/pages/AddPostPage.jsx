@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createPost } from '../redux/features/post/postSlice';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+
+import { msgSuccessfulEddedPost } from '../utils/notification';
+import { createPost } from '../redux/features/post/postSlice';
 
 export const AddPostPage = () => {
     const [title, setTitle] = useState('');
@@ -12,16 +13,15 @@ export const AddPostPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        const data = new FormData();
+        data.append('title', title);
+        data.append('text', text);
+        data.append('image', image);
         try {
-            const data = new FormData();
-            data.append('title', title);
-            data.append('text', text);
-            data.append('image', image);
-
-            dispatch(createPost(data));
-            toast('The post has been added successfully!');
-            navigate('/');
+            await dispatch(createPost(data));
+            msgSuccessfulEddedPost();
+            navigate('/posts');
         } catch (error) {
             console.log(error);
         }
@@ -46,7 +46,9 @@ export const AddPostPage = () => {
             </label>
 
             <div className="flex object-cover py-2">
-                {image && <img src={URL.createObjectURL(image)} alt={image.name} />}
+                {image && (
+                    <img src={URL.createObjectURL(image)} alt={image.name} />
+                )}
             </div>
 
             <label className="text-xs text-white opacity-70">

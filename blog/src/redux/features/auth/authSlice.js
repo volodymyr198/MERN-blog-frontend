@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import axios from '../../../utils/axios.js';
-import { msgRegister409Err } from '../../../utils/notification.js';
+import { errorMessage } from '../../../utils/notification.js';
 
 const initialState = {
     user: null,
@@ -23,8 +23,9 @@ export const registerUser = createAsyncThunk(
             }
             return data;
         } catch (error) {
-            if (error.code === 'ERR_BAD_REQUEST') {
-                msgRegister409Err();
+            if (error.response.status) {
+                const errMessage = error.response.data.message;
+                errorMessage(errMessage);
             }
         }
     }
@@ -43,7 +44,10 @@ export const loginUser = createAsyncThunk(
             }
             return data;
         } catch (error) {
-            console.log(error.message);
+            if (error.response.status) {
+                const errMessage = error.response.data.message;
+                errorMessage(errMessage);
+            }
         }
     }
 );

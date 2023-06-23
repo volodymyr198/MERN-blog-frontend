@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 
 import axios from '../utils/axios';
 import { updateMyPost } from '../redux/features/post/postSlice';
+import { msgSuccessfulUodatedPost } from '../utils/notification';
 
 export const EditPostPage = () => {
     const [title, setTitle] = useState('');
@@ -32,7 +32,7 @@ export const EditPostPage = () => {
             data.append('image', newImage);
 
             dispatch(updateMyPost(data));
-            toast('The post has been updated successfully!');
+            msgSuccessfulUodatedPost();
             navigate('/posts');
         } catch (error) {
             console.log(error.message);

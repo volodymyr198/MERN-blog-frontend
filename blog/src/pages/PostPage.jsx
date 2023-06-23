@@ -6,16 +6,18 @@ import {
     AiFillDelete,
 } from 'react-icons/ai';
 import Moment from 'react-moment';
-import axios from '../utils/axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { DebounceInput } from 'react-debounce-input';
+
+import axios from '../utils/axios';
 import { removeMyPost } from '../redux/features/post/postSlice';
-import { toast } from 'react-toastify';
 import {
     createComment,
     getPostComments,
 } from '../redux/features/comment/commentSlice';
 import { CommentItem } from '../components/CommentItem';
+import { msgSuccessfulDeletedPost } from '../utils/notification';
 
 export const PostPage = () => {
     const [post, setPost] = useState(null);
@@ -27,16 +29,16 @@ export const PostPage = () => {
     const params = useParams();
     const dispatch = useDispatch();
 
-    const removePost = () => {
+    const removePost = async () => {
         try {
-            dispatch(removeMyPost(params.id));
-            toast('Post deleted successfully');
+            await dispatch(removeMyPost(params.id));
+            msgSuccessfulDeletedPost();
             navigate('/posts');
         } catch (error) {
             console.log(error.message);
         }
     };
-
+    
     const fetchPost = useCallback(async () => {
         const { data } = await axios.get(`/posts/${params.id}`);
         setPost(data);
@@ -44,7 +46,7 @@ export const PostPage = () => {
 
     const handleSubmit = () => {
         if (!user) {
-            window.location.href = '/login';
+            navigate('/login');
         }
         try {
             const postId = params.id;
@@ -150,7 +152,9 @@ export const PostPage = () => {
                         onSubmit={e => e.preventDefault()}
                         className="flex gap-2"
                     >
-                        <input
+                        <DebounceInput
+                            minLength={1}
+                            debounceTimeout={300}
                             type="text"
                             value={comment}
                             onChange={e => setComment(e.target.value)}
@@ -160,6 +164,7 @@ export const PostPage = () => {
                         {user ? (
                             <button
                                 onClick={handleSubmit}
+                                disabled={comment.length === 0}
                                 type="submit"
                                 className="flex justify-center items-center bg-gray-600 text-xs text-white rounded-lg py-2 px-4"
                             >
