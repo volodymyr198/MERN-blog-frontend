@@ -70,7 +70,7 @@ export const postSlice = createSlice({
             })
             .addCase(getAllPosts.fulfilled, (state, action) => {
                 state.loading = false;
-                state.posts = action.payload.posts;
+                state.posts = action.payload?.posts;
                 state.popularPosts = action.payload.popularPosts;
             })
             .addCase(getAllPosts.rejected, state => {

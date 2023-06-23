@@ -43,9 +43,12 @@ export const PostPage = () => {
     }, [params.id]);
 
     const handleSubmit = () => {
+        if (!user) {
+            window.location.href = '/login';
+        }
         try {
             const postId = params.id;
-            console.log(comment);
+
             dispatch(createComment({ postId, comment }));
             setComment('');
         } catch (error) {
@@ -59,7 +62,7 @@ export const PostPage = () => {
         } catch (error) {
             console.log(error.message);
         }
-    },[dispatch, params.id]);
+    }, [dispatch, params.id]);
 
     useEffect(() => {
         fetchPost();
@@ -154,17 +157,26 @@ export const PostPage = () => {
                             placeholder="Comment"
                             className="text-black w-full rounded-lg bg-gray-400 border p-2 text-xs outline-none placeholder:text-gray-700"
                         />
-                        <button
-                            onClick={handleSubmit}
-                            type="submit"
-                            className="flex justify-center items-center bg-gray-600 text-xs text-white rounded-lg py-2 px-4"
-                        >
-                            Send
-                        </button>
+                        {user ? (
+                            <button
+                                onClick={handleSubmit}
+                                type="submit"
+                                className="flex justify-center items-center bg-gray-600 text-xs text-white rounded-lg py-2 px-4"
+                            >
+                                Send
+                            </button>
+                        ) : (
+                            <Link
+                                to="/login"
+                                className="flex justify-center items-center bg-gray-600 text-xs text-white rounded-lg py-2 px-4"
+                            >
+                                Send
+                            </Link>
+                        )}
                     </form>
 
                     {comments?.map(cmt => (
-                        <CommentItem key={comment._id} cmt={cmt} />
+                        <CommentItem key={cmt._id} cmt={cmt} />
                     ))}
                 </div>
             </div>

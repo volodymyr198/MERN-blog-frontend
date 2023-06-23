@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
 import axios from '../../../utils/axios.js';
+import { msgRegister409Err } from '../../../utils/notification.js';
 
 const initialState = {
     user: null,
@@ -21,7 +23,9 @@ export const registerUser = createAsyncThunk(
             }
             return data;
         } catch (error) {
-            console.log(error.response.status);
+            if (error.code === 'ERR_BAD_REQUEST') {
+                msgRegister409Err();
+            }
         }
     }
 );
@@ -50,7 +54,7 @@ export const getMe = createAsyncThunk('auth/getMe', async () => {
 
         return data;
     } catch (error) {
-        console.log(error.message);
+        throw error;
     }
 });
 
@@ -73,9 +77,9 @@ export const authSlice = createSlice({
             })
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.status = action.payload.message;
-                state.user = action.payload.newUser;
-                state.token = action.payload.token;
+                state.status = action.payload?.message;
+                state.user = action.payload?.newUser;
+                state.token = action.payload?.token;
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.status = action.payload?.message;
@@ -87,9 +91,9 @@ export const authSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.status = action.payload.message;
-                state.user = action.payload.newUser;
-                state.token = action.payload.token;
+                state.status = action.payload?.message;
+                state.user = action.payload?.newUser;
+                state.token = action.payload?.token;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.status = action.payload?.message;
@@ -107,7 +111,7 @@ export const authSlice = createSlice({
             })
             .addCase(getMe.rejected, (state, action) => {
                 state.isLoading = false;
-                state.status = action.payload.message;
+                state.status = action.payload?.message;
             });
     },
 });
