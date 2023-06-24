@@ -40,7 +40,7 @@ export const PostPage = () => {
             console.log(error.message);
         }
     };
-    
+
     const fetchPost = useCallback(async () => {
         const { data } = await axios.get(`/posts/${params.id}`);
         setPost(data);
@@ -58,6 +58,10 @@ export const PostPage = () => {
         } catch (error) {
             console.log(error.message);
         }
+    };
+
+    const handleGoBack = () => {
+        navigate(-1);
     };
 
     const fetchComments = useCallback(async () => {
@@ -80,10 +84,11 @@ export const PostPage = () => {
         <>
             {isLoading && <IsLoading />}
             <div className="max-w-[900px] mx-auto py-10">
-                <button className="flex justify-center items-center bg-gray-600 text-white rounded-lg py-2 px-4">
-                    <Link className="flex" to={'/posts'}>
-                        Back
-                    </Link>
+                <button
+                    onClick={handleGoBack}
+                    className="flex justify-center items-center bg-gray-600 text-white rounded-lg py-2 px-4"
+                >
+                    Back
                 </button>
 
                 {post && (
