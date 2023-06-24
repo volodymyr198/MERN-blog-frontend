@@ -4,6 +4,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 import { logout, checkIsAuth } from '../redux/features/auth/authSlice';
 import { msgSuccessfulExited } from '../utils/notification';
+import { Button } from './Button';
 
 export const NavBar = () => {
     const isAuth = useSelector(checkIsAuth);
@@ -67,7 +68,7 @@ export const NavBar = () => {
             )}
             <div className="flex justify-center items-center bg-gray-600 text-xs text-white rounded-lg px-4 py-2">
                 {isAuth ? (
-                    <button onClick={logoutHandler}>Go out</button>
+                    <Button onClick={logoutHandler}>Go out</Button>
                 ) : (
                     <Link to={'/login'}>Sign in</Link>
                 )}

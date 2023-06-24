@@ -4,6 +4,7 @@ import Moment from 'react-moment';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { IsLoading } from './IsLoading';
+import { Button } from './Button';
 
 export const PostItem = ({ post }) => {
 const { isLoading } = useSelector(state => state.auth);
@@ -46,13 +47,13 @@ const { isLoading } = useSelector(state => state.auth);
                         </p>
 
                         <div className="flex gap-3 items-center mt-2">
-                            <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
+                            <Button className="gap-2 text-xs text-white opacity-50">
                                 <AiFillEye /> <span>{post.views}</span>
-                            </button>
-                            <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
+                            </Button>
+                            <Button className="gap-2 text-xs text-white opacity-50">
                                 <AiOutlineMessage />{' '}
                                 <span>{post.comments?.length || 0}</span>
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </Link>

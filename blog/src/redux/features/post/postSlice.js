@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../../utils/axios';
+import { errorMessage } from '../../../utils/notification';
 
 const initialState = {
     posts: [],
@@ -44,7 +45,11 @@ export const updateMyPost = createAsyncThunk(
             );
             return data;
         } catch (error) {
-            console.log(error.message);
+            if (error.response.status) {
+                const errMessage = error.response.data.message;
+                
+                errorMessage(errMessage);
+            }
         }
     }
 );
@@ -93,7 +98,7 @@ export const postSlice = createSlice({
             })
             .addCase(updateMyPost.fulfilled, (state, action) => {
                 state.loading = false;
-                const index = state.posts.findIndex(
+                const index = state.posts?.findIndex(
                     post => post._id === action.payload._id
                 );
                 state.posts[index] = action.payload;

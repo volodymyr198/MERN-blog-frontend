@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { msgSuccessfulEddedPost } from '../utils/notification';
 import { createPost } from '../redux/features/post/postSlice';
+import { Button } from '../components/Button';
 
 export const AddPostPage = () => {
     const [title, setTitle] = useState('');
@@ -72,20 +73,20 @@ export const AddPostPage = () => {
                 ></textarea>
             </label>
             <div className="flex gap-8 items-center justify-center mt-4">
-                <button
+                <Button
                     type="button"
                     onClick={handleSubmit}
-                    className="flex justify-center items-center bg-gray-600 w-1/3 text-xs  text-white rounded-md py-2 px-4"
+                    className="bg-gray-600 w-1/3 text-xs  text-white rounded-md py-2 px-4"
                 >
                     Add
-                </button>
-                <button
+                </Button>
+                <Button
                     type="button"
                     onClick={clearFormData}
-                    className="flex justify-center items-center bg-red-500 w-1/3 text-xs text-white rounded-md py-2 px-4"
+                    className="bg-red-500 w-1/3 text-xs text-white rounded-md py-2 px-4"
                 >
-                    Cancel
-                </button>
+                    Clear
+                </Button>
             </div>
         </form>
     );

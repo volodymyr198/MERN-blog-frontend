@@ -1,6 +1,7 @@
 import React from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import { Link } from 'react-router-dom';
+import { Button } from './Button';
 
 export const AuthForm = ({
     title,
@@ -46,13 +47,13 @@ export const AuthForm = ({
             </label>
             {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
             <div className="flex gap-8 justify-center mt-4">
-                <button
+                <Button
                     type="submit"
                     onClick={handleSubmit}
-                    className="flex justify-center text-xs bg-gray-600 text-white rounded-lg py-2 px-4"
+                    className="text-xs bg-gray-600 text-white rounded-lg py-2 px-4"
                 >
                     {buttonText}
-                </button>
+                </Button>
                 <Link
                     to={secondaryLink}
                     className="flex justify-center items-center text-xs text-white"

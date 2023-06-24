@@ -19,6 +19,7 @@ import {
 import { CommentItem } from '../components/CommentItem';
 import { msgSuccessfulDeletedPost } from '../utils/notification';
 import { IsLoading } from '../components/IsLoading';
+import {Button} from '../components/Button';
 
 export const PostPage = () => {
     const [post, setPost] = useState(null);
@@ -84,12 +85,12 @@ export const PostPage = () => {
         <>
             {isLoading && <IsLoading />}
             <div className="max-w-[900px] mx-auto py-10">
-                <button
+                <Button
                     onClick={handleGoBack}
-                    className="flex justify-center items-center bg-gray-600 text-white rounded-lg py-2 px-4"
+                    className="bg-gray-600 text-white rounded-lg py-2 px-4"
                 >
                     Back
-                </button>
+                </Button>
 
                 {post && (
                     <div className="flex gap-10 py-8">
@@ -129,29 +130,29 @@ export const PostPage = () => {
 
                             <div className="flex gap-3 items-center mt-2 justify-between">
                                 <div className="flex gap-3 mt-4">
-                                    <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
+                                    <Button className="gap-2 text-xs text-white opacity-50">
                                         <AiFillEye /> <span>{post.views}</span>
-                                    </button>
-                                    <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
+                                    </Button>
+                                    <Button className="gap-2 text-xs text-white opacity-50">
                                         <AiOutlineMessage />{' '}
                                         <span>
                                             {post.comments?.length || 0}
                                         </span>
-                                    </button>
+                                    </Button>
                                 </div>
                                 {user?._id === post.author && (
                                     <div className="flex gap-3 mt-4">
-                                        <button className="flex items-center justify-center gap-2 text-white opacity-50">
+                                        <Button className="text-white opacity-50">
                                             <Link to={`/${params.id}/edit`}>
                                                 <AiTwotoneEdit />
                                             </Link>
-                                        </button>
-                                        <button
+                                        </Button>
+                                        <Button
                                             onClick={removePost}
-                                            className="flex items-center justify-center gap-2 text-white opacity-50"
+                                            className="text-white opacity-50"
                                         >
                                             <AiFillDelete />
-                                        </button>
+                                        </Button>
                                     </div>
                                 )}
                             </div>
@@ -171,14 +172,13 @@ export const PostPage = () => {
                                     className="text-black w-full rounded-lg bg-gray-400 border p-2 text-xs outline-none placeholder:text-gray-700"
                                 />
                                 {user ? (
-                                    <button
+                                    <Button
                                         onClick={handleSubmit}
-                                        disabled={comment.length === 0}
-                                        type="submit"
-                                        className="flex justify-center items-center bg-gray-600 text-xs text-white rounded-lg py-2 px-4"
+                                        disabled={comment.trim().length === 0}
+                                        className="text-xs text-white rounded-lg py-2 px-4 bg-gray-600"
                                     >
                                         Send
-                                    </button>
+                                    </Button>
                                 ) : (
                                     <Link
                                         to="/login"

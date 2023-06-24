@@ -5,12 +5,15 @@ import { useDispatch } from 'react-redux';
 import axios from '../utils/axios';
 import { updateMyPost } from '../redux/features/post/postSlice';
 import { msgSuccessfulUodatedPost } from '../utils/notification';
+import { postSchema } from '../Shared/validation/postSchema';
+import { Button } from '../components/Button';
 
 export const EditPostPage = () => {
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
     const [oldImage, setOldImage] = useState('');
     const [newImage, setNewImage] = useState('');
+    const [error, setError] = useState('');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -23,7 +26,10 @@ export const EditPostPage = () => {
         setOldImage(data.imgUrl);
     }, [params.id]);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        if (title.trim().length === 0 || text.trim().length === 0) {
+            return setError('The fields title and text cannot be empty!');
+        }
         try {
             const data = new FormData();
             data.append('title', title);
@@ -31,14 +37,16 @@ export const EditPostPage = () => {
             data.append('id', params.id);
             data.append('image', newImage);
 
-            dispatch(updateMyPost(data));
+            await postSchema.validate({ title, text });
+            await dispatch(updateMyPost(data));
+            setError('');
             msgSuccessfulUodatedPost();
             navigate('/posts');
         } catch (error) {
-            console.log(error.message);
+            setError(error.message);
         }
     };
-
+    
     const clearFormData = () => {
         setText('');
         setTitle('');
@@ -100,21 +108,22 @@ export const EditPostPage = () => {
                     className="mt-1 text-black w-full rounded-lg bg-gray-400 border py-1 px-2 text-xs outline-none resize-none h-40 placeholder:text-gray-700"
                 ></textarea>
             </label>
+            {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
             <div className="flex gap-8 items-center justify-center mt-4">
-                <button
+                <Button
                     type="button"
                     onClick={handleSubmit}
-                    className="flex justify-center items-center bg-gray-600 w-1/3 text-xs  text-white rounded-md py-2 px-4"
+                    className="bg-gray-600 w-1/3 text-xs  text-white rounded-md py-2 px-4"
                 >
                     Update
-                </button>
-                <button
+                </Button>
+                <Button
                     type="button"
                     onClick={clearFormData}
-                    className="flex justify-center items-center bg-red-500 w-1/3 text-xs text-white rounded-md py-2 px-4"
+                    className="bg-red-500 w-1/3 text-xs text-white rounded-md py-2 px-4"
                 >
-                    Cancel
-                </button>
+                    Clear
+                </Button>
             </div>
         </form>
     );
