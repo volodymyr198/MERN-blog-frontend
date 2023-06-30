@@ -6,6 +6,7 @@ import { checkIsAuth, registerUser } from '../redux/features/auth/authSlice';
 import { registerLoginSchema } from '../Shared/validation/registerSchema';
 import { msgSuccessfulRegister } from '../utils/notification';
 import { AuthForm } from '../components/AuthForm ';
+import { getAuth } from '../redux/selectors';
 
 
 export const RegisterPage = () => {
@@ -13,7 +14,7 @@ export const RegisterPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const { status } = useSelector(state => state.auth);
+    const { status } = useSelector(getAuth);
     const isAuth = useSelector(checkIsAuth);
     const dispatch = useDispatch();
     const navigate = useNavigate();

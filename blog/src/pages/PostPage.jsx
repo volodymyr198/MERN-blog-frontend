@@ -20,14 +20,14 @@ import { CommentItem } from '../components/CommentItem';
 import { msgSuccessfulDeletedPost } from '../utils/notification';
 import { IsLoading } from '../components/IsLoading';
 import {Button} from '../components/Button';
+import { getAuth, getComment } from '../redux/selectors';
 
 export const PostPage = () => {
     const [post, setPost] = useState(null);
     const [comment, setComment] = useState('');
 
-    const { user } = useSelector(state => state.auth);
-    const { isLoading } = useSelector(state => state.auth);
-    const { comments } = useSelector(state => state.comment);
+    const { user, isLoading } = useSelector(getAuth);
+    const { comments } = useSelector(getComment);
     const navigate = useNavigate();
     const params = useParams();
     const dispatch = useDispatch();

@@ -5,10 +5,11 @@ import { PostItem } from '../components/PostItem';
 import { PopularPosts } from '../components/PopularPosts';
 import { getAllPosts } from '../redux/features/post/postSlice';
 import { IsLoading } from '../components/IsLoading';
+import { getAuth, getPost } from '../redux/selectors';
 
 export const MainPage = () => {
-    const { isLoading } = useSelector(state => state.auth);
-    const { posts, popularPosts } = useSelector(state => state.post);
+    const { isLoading } = useSelector(getAuth);
+    const { posts, popularPosts } = useSelector(getPost);
     const dispatch = useDispatch();
 
     useEffect(() => {

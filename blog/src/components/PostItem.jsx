@@ -5,9 +5,10 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { IsLoading } from './IsLoading';
 import { Button } from './Button';
+import { getAuth } from '../redux/selectors';
 
 export const PostItem = ({ post }) => {
-const { isLoading } = useSelector(state => state.auth);
+    const { isLoading } = useSelector(getAuth);
 
     return (
         <>
